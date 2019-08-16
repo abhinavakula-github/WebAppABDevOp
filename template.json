@@ -1,0 +1,153 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_WebAppABDevOps_name": {
+            "defaultValue": "WebAppABDevOps",
+            "type": "String"
+        },
+        "serverfarms_ASP_FirstRg_894e_externalid": {
+            "defaultValue": "/subscriptions/cba3c358-0c15-479b-b379-667c50a57ec3/resourceGroups/FirstRg/providers/Microsoft.Web/serverfarms/ASP-FirstRg-894e",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+      {
+        "type": "Microsoft.Web/sites",
+        "apiVersion": "2016-08-01",
+        "name": "[parameters('sites_WebAppABDevOps_name')]",
+        "location": "South India",
+        "kind": "app",
+        "properties": {
+          "enabled": true,
+          "hostNameSslStates": [
+            {
+              "name": "WebAppABDevOps.azurewebsites.net",
+              "sslState": "Disabled",
+              "hostType": "Standard"
+            },
+            {
+              "name": "WebAppABDevOps.scm.azurewebsites.net",
+              "sslState": "Disabled",
+              "hostType": "Repository"
+            }
+          ],
+          "serverFarmId": "[parameters('serverfarms_ASP_FirstRg_894e_externalid')]",
+          "reserved": false,
+          "scmSiteAlsoStopped": false,
+          "clientAffinityEnabled": true,
+          "clientCertEnabled": false,
+          "hostNamesDisabled": false,
+          "containerSize": 0,
+          "dailyMemoryTimeQuota": 0,
+          "httpsOnly": false
+        }
+      },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2016-08-01",
+            "name": "[concat(parameters('sites_WebAppABDevOps_name'), '/web')]",
+            "location": "South India",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_WebAppABDevOps_name'))]"
+            ],
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v2.0",
+                "phpVersion": "5.6",
+                "pythonVersion": "",
+                "nodeVersion": "",
+                "linuxFxVersion": "",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2017",
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$WebAppABDevOps",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "appCommandLine": "",
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot\\Ab.html",
+                        "preloadEnabled": false,
+                        "virtualDirectories": null
+                    }
+                ],
+                "winAuthAdminState": 0,
+                "winAuthTenantState": 0,
+                "customAppPoolIdentityAdminState": false,
+                "customAppPoolIdentityTenantState": false,
+                "loadBalancing": "LeastRequests",
+                "routingRules": [],
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetName": "",
+                "siteAuthEnabled": false,
+                "siteAuthSettings": {
+                    "enabled": null,
+                    "unauthenticatedClientAction": null,
+                    "tokenStoreEnabled": null,
+                    "allowedExternalRedirectUrls": null,
+                    "defaultProvider": null,
+                    "clientId": null,
+                    "clientSecret": null,
+                    "clientSecretCertificateThumbprint": null,
+                    "issuer": null,
+                    "allowedAudiences": null,
+                    "additionalLoginParams": null,
+                    "isAadAutoProvisioned": false,
+                    "googleClientId": null,
+                    "googleClientSecret": null,
+                    "googleOAuthScopes": null,
+                    "facebookAppId": null,
+                    "facebookAppSecret": null,
+                    "facebookOAuthScopes": null,
+                    "twitterConsumerKey": null,
+                    "twitterConsumerSecret": null,
+                    "microsoftAccountClientId": null,
+                    "microsoftAccountClientSecret": null,
+                    "microsoftAccountOAuthScopes": null
+                },
+                "localMySqlEnabled": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "ftpsState": "AllAllowed",
+                "reservedInstanceCount": 0,
+                "fileChangeAuditEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2016-08-01",
+            "name": "[concat(parameters('sites_WebAppABDevOps_name'), '/', parameters('sites_WebAppABDevOps_name'), '.azurewebsites.net')]",
+            "location": "South India",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_WebAppABDevOps_name'))]"
+            ],
+            "properties": {
+                "siteName": "WebAppABDevOps",
+                "hostNameType": "Verified"
+            }
+        }
+    ]
+}
